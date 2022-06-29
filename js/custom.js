@@ -30,23 +30,44 @@ function showPreview(event){
     if(event.target.files.length > 0){
         var data = new FormData();
         data.append("image_file", event.target.files[0]);
-        data.append("image_url", "url_to_image");
+        // data.append("image_url", "url_to_image");
 
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
+        // var xhr = new XMLHttpRequest();
+        // xhr.withCredentials = true;
 
-        xhr.addEventListener("readystatechange", function() {
-            if(this.readyState === 4) {
-                console.log(this.responseText);
-            }
-        });
+        // xhr.addEventListener("readystatechange", function() {
+        //     if(this.readyState === 4) {
+        //         console.log(this.responseText);
+        //     }
+        // });
 
-        xhr.open("POST", "https://api.removal.ai/3.0/remove");
-        xhr.setRequestHeader("Rm-Token", "62bacdd957e371.06369301");
-        xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-        xhr.setRequestHeader('Access-Control-Allow-Credentials', true);
+        // xhr.open("POST", "https://api.remove.bg/v1.0");
+        // xhr.setRequestHeader("X-Api-Key", "cHAPmXFUNCYG4QXwS4MYNed6");
+        // xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+        // xhr.setRequestHeader('Access-Control-Allow-Credentials', true);
 
-        xhr.send(data);
+        // xhr.send(data);
+
+            const url = "https://api.remove.bg/v1.0" ;
+            
+            fetch(url, {
+                method : "POST",
+                mode: 'cors',
+                headers: { 'Content-Type': 'multipart/form-data', 'X-Api-Key': 'cHAPmXFUNCYG4QXwS4MYNed6'  },
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(response.error)
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('log',data.messages);
+            })
+            .catch(function(error) {
+                console.log('error',error);
+            });
+
 
         // var selectedFile = event.target.files[0];
         //     var reader = new FileReader();
