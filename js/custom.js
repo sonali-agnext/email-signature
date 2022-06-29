@@ -48,25 +48,26 @@ function showPreview(event){
 
         // xhr.send(data);
 
-            const url = "https://api.remove.bg/v1.0" ;
-            
-            fetch(url, {
-                method : "POST",
-                mode: 'cors',
-                headers: { 'Content-Type': 'multipart/form-data', 'X-Api-Key': 'cHAPmXFUNCYG4QXwS4MYNed6'  },
-            })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(response.error)
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('log',data.messages);
-            })
-            .catch(function(error) {
-                console.log('error',error);
-            });
+        var myHeaders = new Headers();
+        myHeaders.append("Rm-Token", "62bacdd957e371.06369301");
+        myHeaders.append("Cookie", ".AspNetCore.Session=CfDJ8HIfJWbHxklAhwC3OsvlqYRaQn%2FCLCWGZjoEuGd23g%2BYZZzQ92F4jBdJ1%2BD4G2CCYxGgHO%2F1BjPPmazmJMzo9fezd3Qfg8%2BIqlghdiV38jN2Sfi4iDn0%2Bx3fBk%2FT%2Br14DTiWAGvk2WAqCatTOB8znxzyWiMH%2FxBFqLNxzka56I9%2F");
+        
+        var formdata = new FormData();
+        console.log(fileInput.files[0]);
+        formdata.append("image_file", fileInput.files[0], "shutterstock_648907024.jpg");
+        formdata.append("image_url", "url_to_image");
+        
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: formdata,
+          redirect: 'follow'
+        };
+        
+        fetch("https://api.removal.ai/3.0/remove", requestOptions)
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
 
 
         // var selectedFile = event.target.files[0];
