@@ -208,5 +208,12 @@ table.tb2_left.bgimg {position: relative;background:url("http://agnext.in/images
 }
 .form-group label{
   padding-bottom: 0.7rem; 
-   
+
+}
+.m-t110{
+  margin-top: 110px;
+}
+hr{
+  height: 0px !important;
+  opacity: 0.1 !important;
 }
