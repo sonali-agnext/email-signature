@@ -207,6 +207,6 @@ table.tb2_left.bgimg {position: relative;background:url("http://agnext.in/images
     margin-bottom: 1rem;
 }
 .form-group label{
-  padding-bottom: 0.7rem;
-  font-size: 14px
+  padding-bottom: 0.7rem; 
+   
 }
