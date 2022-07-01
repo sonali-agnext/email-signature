@@ -53,7 +53,7 @@
 	</nav>
 	<div class="container-fluid padding-top">
 		<div class="row m-b20">
-			<div class="col-md-7 col-sm-12 col-lg-7">
+			<div class="col-md-8 offset-md-2">
 				<div class="m-t20 m-b20">
 					<h4 style="color:#41700d" >Preview:</h4>
 					<hr />
@@ -188,23 +188,49 @@
 <p id="copy" style="color: #41700d; display:none; padding: 10px;">Copy to Clipboard</p>
 			</div>
 			<!-- form -->
-			<div class="col-md-5 col-sm-12 col-lg-5">
-				<div class="container-card">
+			<div class="m-t20">
+				<div class="col-12 col-md-12 col-lg-12 mx-auto">
 					<!-- <div class="brand-logo"><img src="http://agnext.in/images/companylogo.png" /></div> -->
-					<div class="brand-title">E-Mail Signature</div>
-					<div class="inputs">
-						<label>Name</label>
-						<input type="text" name="name" placeholder="Enter your Name" onkeyup="return inputMethod('name');" id="name"/>
-						<label>Designation</label>
-						<input type="text" name="profile" placeholder="Enter your Designation" onkeyup="return inputMethod('profile');" id="profile"/>
-						<label>Contact Number</label>
-						<input type="text" pattern="\d*" maxlength="10" placeholder="Enter your Contact Number" name="phone" onkeyup="return inputMethod('phone');" id="phone"/>
-						<label>Email</label>
-						<input type="email" name="email" id="email" placeholder="Enter your Agnext's Email" onkeyup="return inputMethod('email');" />
-						<label>LinkedIn Profile</label>
-						<input type="text" name="social" placeholder="(Optional)" id="social" onkeyup="return inputSocial();" />
-						<label>Upload Profile Image (Only Quality Food For Billions)</label>
-						<input type="file" name="file" id="file" accept="image/*" onchange="showPreview(event);" />
+					<div class="text-center"><h2>E-Mail Signature</h2></div>
+					<div class="row inputs">
+						<div class="col-md-4 col-sm-12">
+							<div class="form-group">
+								<label for="name">Name</label>
+								<input type="text" class="form-control" name="name" onkeyup="return inputMethod('name');" id="name"/>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-12">
+							<div class="form-group">
+								<label>Designation</label>
+								<input type="text" class="form-control" name="profile" onkeyup="return inputMethod('profile');" id="profile"/>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-12">
+							<div class="form-group">
+								<label>Contact Number</label>
+								<input type="text" class="form-control" pattern="\d*" maxlength="10" name="phone" onkeyup="return inputMethod('phone');" id="phone"/>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-12">
+							<div class="form-group">
+								<label>Email</label>
+								<input type="email" class="form-control" name="email" id="email" onkeyup="return inputMethod('email');" />
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-12">
+							<div class="form-group">
+								<label>LinkedIn Profile Url</label>
+								<input type="text" class="form-control" name="social" placeholder="(Optional)" id="social" onkeyup="return inputSocial();" />
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-12">
+							<div class="form-group">
+								<label class="text-right">Upload Profile Image (Only Quality Food For Billions)</label>
+								<input type="file" class="form-control" name="file" id="file" accept="image/*" onchange="showPreview(event);" />
+							</div>
+						</div>
+												
+						
 						<!-- leftbox -->
 						<div class="box-2">
 							<div class="result"></div>

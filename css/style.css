@@ -23,7 +23,7 @@ table.tb2_left.bgimg {position: relative;background:url("http://agnext.in/images
  text-transform:uppercase;
 }
 .m-t20{
-	margin-top: 20px;
+	margin-top: 20px !important;
 }
 .m-t50{
 	margin-top: 50px;
@@ -201,4 +201,11 @@ table.tb2_left.bgimg {position: relative;background:url("http://agnext.in/images
     display: block!important;
     padding-top: 0rem!important;
     font-size: 1.1rem;
+}
+.form-group{
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+.form-group label{
+  padding-bottom: 0.25rem;
 }
