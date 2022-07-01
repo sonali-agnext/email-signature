@@ -26,71 +26,79 @@ function inputSocial(){
     document.getElementById('mob_area').innerHTML = html;
     
 }
-// watermark(['https://file.removal.ai/preview/716ff022-d983-4f2c-b38d-0b4f50dd0d3c_shutterstock_648907024.png', 'image/download.png'])
-//   .image(watermark.image.upperLeft(0.5))
-//   .then(function (img) {
-//     document.getElementById('upper-left').appendChild(img);
-//   });
+
+function dataURLtoFile(dataurl, filename) {
+ 
+    var arr = dataurl.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), 
+        n = bstr.length, 
+        u8arr = new Uint8Array(n);
+        
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    
+    return new File([u8arr], filename, {type:mime});
+}
+
 async function run() {
-    const imgUrl =
-      "https://file.removal.ai/preview/716ff022-d983-4f2c-b38d-0b4f50dd0d3c_shutterstock_648907024.png";
-    //1. Convert the image path to canvas
-    const tempCanvas = await imgToCanvas(imgUrl);
-    //2. Add watermark to canvas
-    const canvas = addWatermark(tempCanvas, "https://agnext.com/wp-content/uploads/2021/03/cropped-logo-grad.png");
-    //3. Convert canvas to img
+    var base64img = document.getElementById("cropped").src;
+    
+    
+    //Usage example:
+    var file = dataURLtoFile(base64img,'profile.png');
+    console.log(file);
+    var myHeaders = new Headers();
+    myHeaders.append("Rm-Token", "62bd94a53c89f9.65018857");
+    
+    var formdata = new FormData();
+    formdata.append("image_file", file , "shutterstock_648907024.png");
+    formdata.append("image_url", "url_to_image");
+    formdata.append("crop", 0);
+    
+    var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: formdata,
+    redirect: 'follow'
+    };
+
+    fetch("https://api.removal.ai/3.0/remove", requestOptions)
+    .then(response => response.text())
+    .then(function(result){
+        var data=JSON.parse(result);
+        if(data.status == 200){
+            let url = data.preview_demo;
+            addWatermark(url);
+            
+            console.log(data.preview_demo);
+        }
+        
+    })
+    .catch(error => console.log('error', error));
+}
+
+function addWatermark(url) {
+    const imageUrl = "https://quickchart.io/watermark?mainImageUrl="+url+"&markImageUrl=https://lovely-halva-fbff3f.netlify.app/image/Band_only.png&markRatio=0&imageWidth=88&imageHeight=100&markWidth=90&position=bottom&margin=0";
     var requestOptions = {
         method: 'GET',
         redirect: 'follow'
-    };
-    // const img =       
-    //   fetch("https://quickchart.io/watermark?mainImageUrl=https://file.removal.ai/preview/55b0a2fb-a0e8-49bd-ac60-2fd962bb62b4_shutterstock_648907024.png&markImageUrl=https://agnext.com/wp-content/uploads/2021/03/cropped-logo-grad.png&markRatio=0.25", requestOptions)
-    //     .then(response => response.text())
-    //     .then(function(result){
-    //         console.log(result);
-    //     })
-    //     .catch(error => console.log('error', error));;
-        const imageUrl = "https://quickchart.io/watermark?mainImageUrl=https://file.removal.ai/preview/55b0a2fb-a0e8-49bd-ac60-2fd962bb62b4_shutterstock_648907024.png&markImageUrl=https://agnext.com/wp-content/uploads/2021/03/cropped-logo-grad.png&markRatio=0.25";
-
-        (async () => {
-          const response = await fetch(imageUrl)
-          const imageBlob = await response.blob()
-          const reader = new FileReader();
-          reader.readAsDataURL(imageBlob);
-          reader.onloadend = () => {
-            const base64data = reader.result;
-            const img = document.createElement("img");
-            img.src = base64data;
-            img.setAttribute ("crossorigin", "anonymous");
-            document.body.appendChild((img));
-          }
-        })()
-    //View effects
-    
-}
-run();
-
-async function imgToCanvas(url) {
-    //Create img element
-    const img = document.createElement("img");
-    img.src = url;
-    img.setAttribute ("crossorigin", "anonymous"); // prevent failed to execute 'todataurl' on 'htmlcanvas element' caused by cross domain: tainted canvas may not be exported
-    await new Promise((resolve) => (img.onload = resolve));
-    //Create the canvas DOM element and set its width and height to be the same as the picture
-    const canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    //The coordinates (0,0) indicate that the drawing starts from here and is equivalent to an offset.
-    canvas.getContext("2d").drawImage(img, 0, 0);
-    return canvas;
-}
-
-function addWatermark(canvas, text) {
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "red";
-    ctx.textBaseline = "middle";
-    ctx.fillText('', 20, 20);
-    return canvas;
+      };
+      fetch(imageUrl, requestOptions)
+        .then(response => response.blob())
+        .then(function(result){
+            const reader = new FileReader();
+            reader.readAsDataURL(result);
+            reader.onloadend = () => {
+                const base64data = reader.result;
+                const img = document.createElement("img");
+                img.src = base64data;
+                img.setAttribute ("crossorigin", "anonymous");
+                document.body.appendChild((img));
+            }
+        })
+        .catch(error => console.log('error', error));
 }
 
   function convasToImg(canvas) {
@@ -102,46 +110,71 @@ function addWatermark(canvas, text) {
     image.className = 'watermarked';
     return image;
   }
+let  cropper = '';
+function showPreviewCanvas(event){		
+    if(event.target.files.length > 0){
+        let results = document.querySelector('.result'),
+        img_result = document.querySelector('.img-result'),
+        img_w = document.querySelector('.img-w'),
+        img_h = document.querySelector('.img-h'),
+        options = document.querySelector('.options'),  
+        save = document.querySelector('.save'),      
+        cropped = document.querySelector('.cropped'),
+        dwn = document.querySelector('.download'),
+        removebg = '',
+        upload = document.querySelector('#file-input');
+                // start file reader
+        const reader = new FileReader();
+        reader.onload = (e)=> {
+        if(e.target.result){
+                removebg = e.target.result;
+                // create new image
+                let img = document.createElement('img');
+                img.id = 'image';
+                img.src = removebg;
+                // clean result before
+                results.innerHTML = '';
+                // append new image
+                results.appendChild(img);
+                // show save btn and options
+                save.classList.remove('hide');
+                options.classList.remove('hide');
+                    // init cropper
+                cropper = new Cropper(img, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    cropBoxResizable: false,
+                    ready: function () {
+                      croppable = true;
+                    },
+
+                }
+                );
+   
+        }
+        };
+        reader.readAsDataURL(event.target.files[0]);
+
+    }
+}
 
 function showPreview(event){		
     if(event.target.files.length > 0){
-        var myHeaders = new Headers();
-        myHeaders.append("Rm-Token", "62bacdd957e371.06369301");
-        
-        var formdata = new FormData();
-        formdata.append("image_file", event.target.files[0], "shutterstock_648907024.jpg");
-        formdata.append("image_url", "url_to_image");
-        
-        var requestOptions = {
-          method: 'POST',
-          headers: myHeaders,
-          body: formdata,
-          redirect: 'follow'
-        };
+        var selectedFile = event.target.files[0];
+            var reader = new FileReader();
 
-        fetch("https://api.removal.ai/3.0/remove", requestOptions)
-          .then(response => response.text())
-          .then(function(result){
-            console.log(result);
-            
-          })
-          .catch(error => console.log('error', error));
+            var imgtag = document.getElementById("profile-image");
+            imgtag.title = selectedFile.name;
 
+            reader.onload = function(event) {
+                imgtag.src = event.target.result;
+            };
 
-        // var selectedFile = event.target.files[0];
-        //     var reader = new FileReader();
-
-        //     var imgtag = document.getElementById("profile-image");
-        //     imgtag.title = selectedFile.name;
-
-        //     reader.onload = function(event) {
-        //         imgtag.src = event.target.result;
-        //     };
-
-        //     reader.readAsDataURL(selectedFile);
+            reader.readAsDataURL(selectedFile);
         // }
     }
 }
+
 function copyToClipboard() {
     document.getElementById('copy').style.display='unset';
     var r = document.createRange();
@@ -161,3 +194,49 @@ setTimeout(function(){
 function removingBackground(){
     
 }
+function getRoundedCanvas(sourceCanvas) {
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    var width = sourceCanvas.width;
+    var height = sourceCanvas.height;
+
+    canvas.width = width;
+    canvas.height = height;
+    context.imageSmoothingEnabled = true;
+    context.drawImage(sourceCanvas, 0, 0, width, height);
+    context.globalCompositeOperation = 'destination-in';
+    context.beginPath();
+    context.fillRect(0, 0, 88, 88);
+    context.fillStyle = "#FFF";
+    context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true);
+    context.fill();
+    return canvas;
+}
+
+// save on click
+function saveImage(event){
+    event.preventDefault();
+    let results = document.querySelector('.result'),
+  img_result = document.querySelector('.img-result'),
+  img_w = document.querySelector('.img-w'),
+  img_h = document.querySelector('.img-h'),
+  options = document.querySelector('.options'),  
+  save = document.querySelector('.save'),      
+  cropped = document.querySelector('.cropped'),
+  dwn = document.querySelector('.download'),
+  upload = document.querySelector('#file-input');
+  var roundedCanvas;
+
+    let croppedCanvas = cropper.getCroppedCanvas({
+        fillColor: '#fff',
+        width:88, height:88 // input value
+      });
+    // Round
+    roundedCanvas = getRoundedCanvas(croppedCanvas);
+      // remove hide class of img
+    //   cropped.classList.remove('hide');
+      img_result.classList.remove('hide');
+      // show image cropped
+      cropped.src = roundedCanvas.toDataURL();
+      run();
+  };
