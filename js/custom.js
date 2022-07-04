@@ -13,7 +13,12 @@ function inputMethod(name) {
     if(name == "name" || name == "profile"){
         document.getElementById('replace-'+name).innerText = titleCase(inputName);
     }else{
-        document.getElementById('replace-'+name).innerText = inputName;
+        if(name == "profile_url"){
+            var preview = document.getElementById("profile-image");
+            preview.src = inputName;
+        }else{
+            document.getElementById('replace-'+name).innerText = inputName;
+        }        
     }		
 }
 function inputSocial(){
@@ -160,22 +165,27 @@ function showPreviewCanvas(event){
 
 function showPreview(event){		
     if(event.target.files.length > 0){
-        var selectedFile = event.target.files[0];
-            var reader = new FileReader();
+        // var selectedFile = event.target.files[0];
+            // var reader = new FileReader();
 
-            var imgtag = document.getElementById("profile-image");
-            imgtag.title = selectedFile.name;
+        //     var imgtag = document.getElementById("profile-image");
+        //     imgtag.title = selectedFile.name;
 
-            reader.onload = function(event) {
-                imgtag.src = event.target.result;
-            };
+        //     reader.onload = function(event) {
+        //         imgtag.src = dataURItoBlob(event.target.result);
+        //     };
 
-            reader.readAsDataURL(selectedFile);
-        // }
+        //     
+        // // }
+        var src = URL.createObjectURL(event.target.files[0]);
+        var preview = document.getElementById("profile-image");
+        preview.src = src;
+        // reader.readAsDataURL(selectedFile);
+        // preview.style.display = "block";
     }
 }
+function copyToClipboard(event) {
 
-function copyToClipboard() {
     document.getElementById('copy').style.display='unset';
     var r = document.createRange();
     r.selectNode(document.getElementById('copyable'));
